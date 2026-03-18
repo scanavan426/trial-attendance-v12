@@ -5,10 +5,57 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Trial Dashboard</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f2f5;color:#1a1a2e}header{background:linear-gradient(135deg,#1a1a2e,#16213e 50%,#0f3460);color:#fff;padding:24px 32px}header h1{font-size:1.6rem;font-weight:700}header p{opacity:.7;font-size:.9rem;margin-top:4px}.export-btn{margin-top:12px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:.85rem}.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;padding:24px 32px 0}.kpi-card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}.kpi-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;color:#666}.kpi-value{font-size:2rem;font-weight:700;margin:6px 0 2px}.kpi-sub{font-size:.8rem;color:#888}.kpi-card.on-track .kpi-value{color:#10b981}.kpi-card.at-risk .kpi-value{color:#ef4444}.kpi-card.main .kpi-value{color:#3b82f6}.main-content{display:grid;grid-template-columns:280px 1fr;gap:20px;padding:20px 32px 32px}.sidebar{display:flex;flex-direction:column;gap:16px}.filter-card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}.filter-card h3{font-size:.85rem;font-weight:600;color:#333;margin-bottom:14px}.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}.tab{padding:5px 10px;border-radius:20px;font-size:.75rem;border:1px solid #e0e0e0;background:#fff;cursor:pointer}.tab.active{background:#1a1a2e;color:#fff;border-color:#1a1a2e}.region-list{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}.region-btn{padding:6px 10px;border-radius:8px;font-size:.78rem;border:1px solid #e0e0e0;background:#fff;cursor:pointer;text-align:left}.region-btn.active{background:#eff6ff;border-color:#3b82f6;color:#2563eb}.reset-btn{width:100%;padding:8px;border-radius:8px;border:1px solid #e0e0e0;background:#fff;cursor:pointer;font-size:.8rem;color:#555}.slider-group{margin-bottom:12px}.slider-label{font-size:.75rem;color:#555;margin-bottom:4px;display:flex;justify-content:space-between}input[type=range]{width:100%;accent-color:#3b82f6}.region-summary{display:grid;grid-template-columns:1fr 1fr;gap:10px}.region-card{background:#fff;border-radius:10px;padding:14px;box-shadow:0 2px 6px rgba(0,0,0,.05);border-left:4px solid #3b82f6}.region-card h4{font-size:.8rem;font-weight:600;color:#333}.loc-count{font-size:.7rem;color:#888;margin-bottom:6px}.stats{font-size:.75rem;color:#555}.table-card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06);overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:.85rem}th{text-align:left;padding:10px 12px;font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;color:#888;border-bottom:2px solid #f0f0f0}td{padding:11px 12px;border-bottom:1px solid #f5f5f5}tr:hover td{background:#fafafa}.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.72rem;font-weight:600}.badge.on-track{background:#d1fae5;color:#065f46}.badge.needs-attention{background:#fef3c7;color:#92400e}.badge.at-risk{background:#fee2e2;color:#991b1b}.bar-wrap{display:flex;align-items:center;gap:8px}.bar{height:6px;border-radius:3px;min-width:4px}.bar.att{background:#3b82f6}.bar.sd{background:#8b5cf6}.bar.tot{background:#10b981}.pct{font-size:.8rem;min-width:44px}.right{display:flex;justify-content:flex-end;margin-bottom:12px}.search-box{padding:7px 12px;border:1px solid #e0e0e0;border-radius:8px;font-size:.85rem;width:220px}.empty-msg{text-align:center;color:#aaa;padding:24px;font-size:.9rem}@media(max-width:900px){.main-content{grid-template-columns:1fr}.kpi-grid{grid-template-columns:repeat(2,1fr);padding:16px}header,.main-content{padding-left:16px;padding-right:16px}.region-summary{grid-template-columns:1fr}}
-</style>
-</head>
-<body>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f0f2f5;color:#1a1a2e}
+header{background:linear-gradient(135deg,#1a1a2e,#16213e 50%,#0f3460);color:#fff;padding:24px 32px}
+header h1{font-size:1.6rem;font-weight:700}
+header p{opacity:.7;font-size:.9rem;margin-top:4px}
+.export-btn{margin-top:12px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:.85rem}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;padding:24px 32px 0}
+.kpi-card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.kpi-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;color:#666}
+.kpi-value{font-size:2rem;font-weight:700;margin:6px 0 2px}
+.kpi-sub{font-size:.8rem;color:#888}
+.kpi-card.on-track .kpi-value{color:#10b981}
+.kpi-card.at-risk .kpi-value{color:#ef4444}
+.kpi-card.main .kpi-value{color:#3b82f6}
+.main-content{display:grid;grid-template-columns:280px 1fr;gap:20px;padding:20px 32px 32px}
+.sidebar{display:flex;flex-direction:column;gap:16px}
+.filter-card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.filter-card h3{font-size:.85rem;font-weight:600;color:#333;margin-bottom:14px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.tab{padding:5px 10px;border-radius:20px;font-size:.75rem;border:1px solid #e0e0e0;background:#fff;cursor:pointer}
+.tab.active{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.region-list{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.region-btn{padding:6px 10px;border-radius:8px;font-size:.78rem;border:1px solid #e0e0e0;background:#fff;cursor:pointer;text-align:left}
+.region-btn.active{background:#eff6ff;border-color:#3b82f6;color:#2563eb}
+.reset-btn{width:100%;padding:8px;border-radius:8px;border:1px solid #e0e0e0;background:#fff;cursor:pointer;font-size:.8rem;color:#555}
+.slider-group{margin-bottom:12px}
+.slider-label{font-size:.75rem;color:#555;margin-bottom:4px;display:flex;justify-content:space-between}
+input[type=range]{width:100%;accent-color:#3b82f6}
+.region-summary{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.region-card{background:#fff;border-radius:10px;padding:14px;box-shadow:0 2px 6px rgba(0,0,0,.05);border-left:4px solid #3b82f6}
+.region-card h4{font-size:.8rem;font-weight:600;color:#333}
+.loc-count{font-size:.7rem;color:#888;margin-bottom:6px}
+.stats{font-size:.75rem;color:#555}
+.table-card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06);overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+th{text-align:left;padding:10px 12px;font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;color:#888;border-bottom:2px solid #f0f0f0}
+td{padding:11px 12px;border-bottom:1px solid #f5f5f5}
+tr:hover td{background:#fafafa}
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.72rem;font-weight:600}
+.badge.on-track{background:#d1fae5;color:#065f46}
+.badge.needs-attention{background:#fef3c7;color:#92400e}
+.badge.at-risk{background:#fee2e2;color:#991b1b}
+.bar-wrap{display:flex;align-items:center;gap:8px}
+.bar{height:6px;border-radius:3px;min-width:4px}
+.bar.att{background:#3b82f6}.bar.sd{background:#8b5cf6}.bar.tot{background:#10b981}
+.pct{font-size:.8rem;min-width:44px}
+.right{display:flex;justify-content:flex-end;margin-bottom:12px}
+.search-box{padding:7px 12px;border:1px solid #e0e0e0;border-radius:8px;font-size:.85rem;width:220px}
+.empty-msg{text-align:center;color:#aaa;padding:24px;font-size:.9rem}
+@media(max-width:900px){.main-content{grid-template-columns:1fr}.kpi-grid{grid-template-columns:repeat(2,1fr);padding:16px}header,.main-content{padding-left:16px;padding-right:16px}.region-summary{grid-template-columns:1fr}}
+</style></head><body>
 <header><h1>Trial Dashboard</h1><p>Trial session attendance, same-day &amp; total conversion by location</p><button class="export-btn" onclick="exportCSV()">&#8595; Export CSV</button></header>
 <div class="kpi-grid">
 <div class="kpi-card main"><div class="kpi-label">Overall att.</div><div class="kpi-value">77.4%</div><div class="kpi-sub">1580 of 2042 attended</div></div>
@@ -17,52 +64,117 @@
 <div class="kpi-card on-track"><div class="kpi-label">On track</div><div class="kpi-value">11</div><div class="kpi-sub">Total conv &ge; 75%</div></div>
 <div class="kpi-card at-risk"><div class="kpi-label">At risk</div><div class="kpi-value">8</div><div class="kpi-sub">Total conv &lt; 70%</div></div>
 </div>
-<div class="main-content">
-<div class="sidebar">
+<div class="main-content"><div class="sidebar">
+<div class="filter-card"><h3>Filter by Status</h3><div class="tabs">
+<button class="tab active" onclick="setStatus(0,this)">All <span id="c0"></span></button>
+<button class="tab" onclick="setStatus(1,this)">On track <span id="c1"></span></button>
+<button class="tab" onclick="setStatus(2,this)">Needs attention <span id="c2"></span></button>
+<button class="tab" onclick="setStatus(3,this)">At risk <span id="c3"></span></button>
+</div><h3>Filter by Region</h3><div class="region-list" id="RB"></div>
+<button class="reset-btn" onclick="resetF()">&#8635; Reset filters</button></div>
 <div class="filter-card">
-<h3>Filter by Status</h3>
-<div class="tabs">
-<button class="tab active" onclick="setStatus('All',this)">All <span id="cnt-all"></span></button>
-<button class="tab" onclick="setStatus('On track',this)">On track <span id="cnt-on"></span></button>
-<button class="tab" onclick="setStatus('Needs attention',this)">Needs attention <span id="cnt-needs"></span></button>
-<button class="tab" onclick="setStatus('At risk',this)">At risk <span id="cnt-risk"></span></button>
+<h3>Attended %</h3><div class="slider-group"><div class="slider-label"><span>0%</span><span>100%</span></div>
+<input type="range" id="a0" min="0" max="100" value="0" oninput="applyF()">
+<input type="range" id="a1" min="0" max="100" value="100" oninput="applyF()"></div>
+<h3>SD Conv %</h3><div class="slider-group"><div class="slider-label"><span>0%</span><span>100%</span></div>
+<input type="range" id="s0" min="0" max="100" value="0" oninput="applyF()">
+<input type="range" id="s1" min="0" max="100" value="100" oninput="applyF()"></div>
+<h3>Total Conv %</h3><div class="slider-group"><div class="slider-label"><span>0%</span><span>100%</span></div>
+<input type="range" id="t0" min="0" max="100" value="0" oninput="applyF()">
+<input type="range" id="t1" min="0" max="100" value="100" oninput="applyF()"></div></div>
+<div class="filter-card"><h3 style="margin-bottom:12px">Region Summary</h3><div class="region-summary" id="RS"></div></div>
 </div>
-<h3>Filter by Region</h3>
-<div class="region-list" id="region-btns"></div>
-<button class="reset-btn" onclick="resetFilters()">&#8635; Reset filters</button>
-</div>
-<div class="filter-card">
-<h3>Attended %</h3>
-<div class="slider-group"><div class="slider-label"><span>0%</span><span>100%</span></div><input type="range" id="att-min" min="0" max="100" value="0" oninput="applyFilters()"><input type="range" id="att-max" min="0" max="100" value="100" oninput="applyFilters()"></div>
-<h3>SD Conv %</h3>
-<div class="slider-group"><div class="slider-label"><span>0%</span><span>100%</span></div><input type="range" id="sd-min" min="0" max="100" value="0" oninput="applyFilters()"><input type="range" id="sd-max" min="0" max="100" value="100" oninput="applyFilters()"></div>
-<h3>Total Conv %</h3>
-<div class="slider-group"><div class="slider-label"><span>0%</span><span>100%</span></div><input type="range" id="tot-min" min="0" max="100" value="0" oninput="applyFilters()"><input type="range" id="tot-max" min="0" max="100" value="100" oninput="applyFilters()"></div>
-</div>
-<div class="filter-card"><h3 style="margin-bottom:12px">Region Summary</h3><div class="region-summary" id="region-summary"></div></div>
-</div>
-<div style="display:flex;flex-direction:column;gap:16px">
-<div class="table-card">
-<div class="right"><input class="search-box" id="search" placeholder="Search location..." oninput="applyFilters()"></div>
-<table><thead><tr><th>#</th><th>Location</th><th>Region</th><th>Sched.</th><th>Attended</th><th>Att.%</th><th>SD Conv%</th><th>Total Conv%</th><th>Status</th></tr></thead><tbody id="tbody"></tbody></table>
-<div class="empty-msg" id="empty-msg" style="display:none">No locations match your search.</div>
-</div>
-</div>
-</div>
+<div style="display:flex;flex-direction:column;gap:16px"><div class="table-card">
+<div class="right"><input class="search-box" id="SQ" placeholder="Search location..." oninput="applyF()"></div>
+<table><thead><tr><th>#</th><th>Location</th><th>Region</th><th>Sched.</th><th>Attended</th><th>Att.%</th><th>SD Conv%</th><th>Total Conv%</th><th>Status</th></tr></thead><tbody id="TB"></tbody></table>
+<div class="empty-msg" id="EM" style="display:none">No locations match your search.</div>
+</div></div></div>
 <script>
-var D=[{l:"Buffalo Grove",r:"Midwest",s:42,a:37,ap:88.10,sd:89.19,t:94.59,st:"On track"},{l:"Hoffman Estates",r:"Midwest",s:46,a:38,ap:82.61,sd:89.47,t:92.11,st:"On track"},{l:"Frisco",r:"South",s:98,a:67,ap:68.37,sd:85.07,t:86.57,st:"On track"},{l:"Atlanta - North Druid Hills",r:"South",s:102,a:71,ap:69.61,sd:78.87,t:83.10,st:"On track"},{l:"Niles",r:"Midwest",s:30,a:26,ap:86.67,sd:73.08,t:80.77,st:"On track"},{l:"Plano",r:"South",s:57,a:41,ap:71.93,sd:78.05,t:80.49,st:"On track"},{l:"Johns Creek",r:"South",s:71,a:46,ap:64.79,sd:63.04,t:80.43,st:"On track"},{l:"Allen",r:"South",s:95,a:66,ap:69.47,sd:75.76,t:78.79,st:"On track"},{l:"Chantilly",r:"East",s:43,a:34,ap:79.07,sd:64.71,t:76.47,st:"On track"},{l:"Falls Church",r:"East",s:78,a:67,ap:85.90,sd:68.66,t:76.12,st:"On track"},{l:"Germantown",r:"South",s:85,a:61,ap:71.76,sd:73.77,t:75.41,st:"On track"},{l:"Fairfax",r:"East",s:77,a:67,ap:87.01,sd:67.16,t:74.63,st:"Needs attention"},{l:"Wilmette",r:"Midwest",s:31,a:30,ap:96.77,sd:60.00,t:73.33,st:"Needs attention"},{l:"Springfield",r:"East",s:97,a:82,ap:84.54,sd:65.85,t:71.95,st:"Needs attention"},{l:"Chicago - North Center",r:"Midwest",s:128,a:96,ap:75.00,sd:58.33,t:67.71,st:"At risk"},{l:"Lakewood",r:"West",s:294,a:201,ap:68.37,sd:61.69,t:65.17,st:"At risk"},{l:"Tustin",r:"West",s:86,a:86,ap:100.00,sd:56.98,t:62.79,st:"At risk"},{l:"Torrance",r:"West",s:245,a:190,ap:77.55,sd:54.74,t:62.63,st:"At risk"},{l:"Gilbert",r:"Southwest",s:97,a:71,ap:73.20,sd:53.52,t:61.97,st:"At risk"},{l:"Dulles",r:"East",s:50,a:43,ap:86.00,sd:58.14,t:60.47,st:"At risk"},{l:"San Diego - Point Loma",r:"West",s:107,a:84,ap:78.50,sd:50.00,t:59.52,st:"At risk"},{l:"Huntington Beach",r:"West",s:83,a:76,ap:91.57,sd:55.26,t:57.89,st:"At risk"}];
+var ST=["All","On track","Needs attention","At risk"];
 var RG=["East","South","West","Southwest","Midwest"];
-var RC={East:"#3b82f6",South:"#10b981",West:"#f59e0b",Southwest:"#8b5cf6",Midwest:"#ef4444"};
-var aS="All",aR="All";
-function doInit(){var rb=document.getElementById("region-btns");rb.innerHTML="<button class='region-btn active' onclick='setR("All",this)'>All regions</button>"+RG.map(function(r){return "<button class='region-btn' onclick='setR(""+r+"",this)'>"+r+"</button>";}).join("");var rs=document.getElementById("region-summary");rs.innerHTML=RG.map(function(r){var ls=D.filter(function(d){return d.r===r;});var aa=(ls.reduce(function(s,d){return s+d.ap;},0)/ls.length).toFixed(1);var at=(ls.reduce(function(s,d){return s+d.t;},0)/ls.length).toFixed(1);return "<div class='region-card' style='border-left-color:"+RC[r]+"'><h4>"+r+"</h4><div class='loc-count'>"+ls.length+" locations</div><div class='stats'>Att. "+aa+"% &middot; Conv "+at+"%</div></div>";}).join("");document.getElementById("cnt-all").textContent=D.length;document.getElementById("cnt-on").textContent=D.filter(function(d){return d.st==="On track";}).length;document.getElementById("cnt-needs").textContent=D.filter(function(d){return d.st==="Needs attention";}).length;document.getElementById("cnt-risk").textContent=D.filter(function(d){return d.st==="At risk";}).length;doRender(D);}
-function setStatus(s,el){aS=s;document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("active");});el.classList.add("active");applyFilters();}
-function setR(r,el){aR=r;document.querySelectorAll(".region-btn").forEach(function(b){b.classList.remove("active");});el.classList.add("active");applyFilters();}
-function resetFilters(){aS="All";aR="All";document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("active");});document.querySelector(".tab").classList.add("active");document.querySelectorAll(".region-btn").forEach(function(b){b.classList.remove("active");});document.querySelector(".region-btn").classList.add("active");["att-min","att-max","sd-min","sd-max","tot-min","tot-max"].forEach(function(id,i){document.getElementById(id).value=[0,100,0,100,0,100][i];});document.getElementById("search").value="";applyFilters();}
-function applyFilters(){var aMin=+document.getElementById("att-min").value,aMax=+document.getElementById("att-max").value,sMin=+document.getElementById("sd-min").value,sMax=+document.getElementById("sd-max").value,tMin=+document.getElementById("tot-min").value,tMax=+document.getElementById("tot-max").value,q=document.getElementById("search").value.toLowerCase();doRender(D.filter(function(d){return(aS==="All"||d.st===aS)&&(aR==="All"||d.r===aR)&&d.ap>=aMin&&d.ap<=aMax&&d.sd>=sMin&&d.sd<=sMax&&d.t>=tMin&&d.t<=tMax&&d.l.toLowerCase().indexOf(q)>=0;}));}
-function doBar(v,c){return "<div class='bar-wrap'><div class='bar "+c+"' style='width:"+Math.round(v)+"px'></div><span class='pct'>"+v.toFixed(2)+"%</span></div>";}
-function doRender(data){var tb=document.getElementById("tbody"),em=document.getElementById("empty-msg");if(!data.length){tb.innerHTML="";em.style.display="block";return;}em.style.display="none";tb.innerHTML=data.map(function(d,i){var sc=d.st==="On track"?"on-track":d.st==="Needs attention"?"needs-attention":"at-risk";return "<tr><td>"+(i+1)+"</td><td><strong>"+d.l+"</strong></td><td><span style='font-size:.75rem;padding:2px 8px;border-radius:10px;background:"+RC[d.r]+"22;color:"+RC[d.r]+";font-weight:600'>"+d.r+"</span></td><td>"+d.s+"</td><td>"+d.a+"</td><td>"+doBar(d.ap,"att")+"</td><td>"+doBar(d.sd,"sd")+"</td><td>"+doBar(d.t,"tot")+"</td><td><span class='badge "+sc+"'>"+d.st+"</span></td></tr>";}).join("");}
-function exportCSV(){var rows=[["Location","Region","Scheduled","Attended","Att%","SD Conv%","Total Conv%","Status"]];D.forEach(function(d){rows.push([d.l,d.r,d.s,d.a,d.ap,d.sd,d.t,d.st]);});var a=document.createElement("a");a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(rows.map(function(r){return r.join(",");}).join("\n"));a.download="trial_attendance.csv";a.click();}
+var RC={"East":"#3b82f6","South":"#10b981","West":"#f59e0b","Southwest":"#8b5cf6","Midwest":"#ef4444"};
+var D=[
+["Buffalo Grove","Midwest",42,37,88.10,89.19,94.59,1],
+["Hoffman Estates","Midwest",46,38,82.61,89.47,92.11,1],
+["Frisco","South",98,67,68.37,85.07,86.57,1],
+["Atlanta - North Druid Hills","South",102,71,69.61,78.87,83.10,1],
+["Niles","Midwest",30,26,86.67,73.08,80.77,1],
+["Plano","South",57,41,71.93,78.05,80.49,1],
+["Johns Creek","South",71,46,64.79,63.04,80.43,1],
+["Allen","South",95,66,69.47,75.76,78.79,1],
+["Chantilly","East",43,34,79.07,64.71,76.47,1],
+["Falls Church","East",78,67,85.90,68.66,76.12,1],
+["Germantown","South",85,61,71.76,73.77,75.41,1],
+["Fairfax","East",77,67,87.01,67.16,74.63,2],
+["Wilmette","Midwest",31,30,96.77,60.00,73.33,2],
+["Springfield","East",97,82,84.54,65.85,71.95,2],
+["Chicago - North Center","Midwest",128,96,75.00,58.33,67.71,3],
+["Lakewood","West",294,201,68.37,61.69,65.17,3],
+["Tustin","West",86,86,100.00,56.98,62.79,3],
+["Torrance","West",245,190,77.55,54.74,62.63,3],
+["Gilbert","Southwest",97,71,73.20,53.52,61.97,3],
+["Dulles","East",50,43,86.00,58.14,60.47,3],
+["San Diego - Point Loma","West",107,84,78.50,50.00,59.52,3],
+["Huntington Beach","West",83,76,91.57,55.26,57.89,3]
+];
+var aS=0,aR=0;
+function gv(id){return +document.getElementById(id).value;}
+function gi(id){return document.getElementById(id);}
+function doInit(){
+  var rb=gi("RB");
+  rb.innerHTML="<button class=\"region-btn active\" onclick=\"setR(0,this)\">All regions</button>"+
+    RG.map(function(r,i){return "<button class=\"region-btn\" onclick=\"setR("+(i+1)+",this)\">"+r+"</button>";}).join("");
+  var rs=gi("RS");
+  rs.innerHTML=RG.map(function(r){
+    var ls=D.filter(function(d){return d[1]===r;});
+    var aa=(ls.reduce(function(s,d){return s+d[4];},0)/ls.length).toFixed(1);
+    var at=(ls.reduce(function(s,d){return s+d[6];},0)/ls.length).toFixed(1);
+    return "<div class=\"region-card\" style=\"border-left-color:"+RC[r]+"\"><h4>"+r+"</h4><div class=\"loc-count\">"+ls.length+" locations</div><div class=\"stats\">Att. "+aa+"% &middot; Conv "+at+"%</div></div>";
+  }).join("");
+  gi("c0").textContent=D.length;
+  gi("c1").textContent=D.filter(function(d){return d[7]===1;}).length;
+  gi("c2").textContent=D.filter(function(d){return d[7]===2;}).length;
+  gi("c3").textContent=D.filter(function(d){return d[7]===3;}).length;
+  applyF();
+}
+function setStatus(s,el){aS=s;document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("active");});el.classList.add("active");applyF();}
+function setR(r,el){aR=r;document.querySelectorAll(".region-btn").forEach(function(b){b.classList.remove("active");});el.classList.add("active");applyF();}
+function resetF(){
+  aS=0;aR=0;
+  document.querySelector(".tab").click();
+  document.querySelector(".region-btn").click();
+  ["a0","a1","s0","s1","t0","t1"].forEach(function(id,i){gi(id).value=[0,100,0,100,0,100][i];});
+  gi("SQ").value="";applyF();
+}
+function applyF(){
+  var aMin=gv("a0"),aMax=gv("a1"),sMin=gv("s0"),sMax=gv("s1"),tMin=gv("t0"),tMax=gv("t1");
+  var q=gi("SQ").value.toLowerCase();
+  var r=D.filter(function(d){
+    return (aS===0||d[7]===aS)&&(aR===0||d[1]===RG[aR-1])&&
+      d[4]>=aMin&&d[4]<=aMax&&d[5]>=sMin&&d[5]<=sMax&&d[6]>=tMin&&d[6]<=tMax&&
+      d[0].toLowerCase().indexOf(q)>=0;
+  });
+  var tb=gi("TB"),em=gi("EM");
+  if(!r.length){tb.innerHTML="";em.style.display="block";return;}
+  em.style.display="none";
+  tb.innerHTML=r.map(function(d,i){
+    var sc=d[7]===1?"on-track":d[7]===2?"needs-attention":"at-risk";
+    var sl=ST[d[7]];
+    return "<tr><td>"+(i+1)+"</td><td><strong>"+d[0]+"</strong></td>"+
+      "<td><span style=\"font-size:.75rem;padding:2px 8px;border-radius:10px;background:"+RC[d[1]]+"22;color:"+RC[d[1]]+";font-weight:600\">"+d[1]+"</span></td>"+
+      "<td>"+d[2]+"</td><td>"+d[3]+"</td>"+
+      "<td><div class=\"bar-wrap\"><div class=\"bar att\" style=\"width:"+Math.round(d[4])+"px\"></div><span class=\"pct\">"+d[4].toFixed(2)+"%</span></div></td>"+
+      "<td><div class=\"bar-wrap\"><div class=\"bar sd\" style=\"width:"+Math.round(d[5])+"px\"></div><span class=\"pct\">"+d[5].toFixed(2)+"%</span></div></td>"+
+      "<td><div class=\"bar-wrap\"><div class=\"bar tot\" style=\"width:"+Math.round(d[6])+"px\"></div><span class=\"pct\">"+d[6].toFixed(2)+"%</span></div></td>"+
+      "<td><span class=\"badge "+sc+"\">"+sl+"</span></td></tr>";
+  }).join("");
+}
+function exportCSV(){
+  var rows=[["Location","Region","Scheduled","Attended","Att%","SD Conv%","Total Conv%","Status"]];
+  D.forEach(function(d){rows.push([d[0],d[1],d[2],d[3],d[4],d[5],d[6],ST[d[7]]]);});
+  var a=document.createElement("a");
+  a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(rows.map(function(r){return r.join(",");}).join("\n"));
+  a.download="trial_attendance.csv";a.click();
+}
 window.onload=doInit;
-</script>
-</body>
-</html>
+</script></body></html>
