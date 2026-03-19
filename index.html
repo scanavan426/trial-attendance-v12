@@ -41,6 +41,11 @@ input[type=range]{width:100%;accent-color:#3b82f6}
 .table-card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06);overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:.85rem}
 th{text-align:left;padding:10px 12px;font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;color:#888;border-bottom:2px solid #f0f0f0}
+th.sortable{cursor:pointer;user-select:none;white-space:nowrap}
+th.sortable:hover{color:#3b82f6;background:#f8faff}
+th.sort-asc .si::after{content:" ▲";color:#3b82f6}
+th.sort-desc .si::after{content:" ▼";color:#3b82f6}
+th:not(.sort-asc):not(.sort-desc) .si::after{content:" ⇅";opacity:.4}
 td{padding:11px 12px;border-bottom:1px solid #f5f5f5}
 tr:hover td{background:#fafafa}
 .badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.72rem;font-weight:600}
@@ -73,20 +78,21 @@ tr:hover td{background:#fafafa}
 </div><h3>Filter by Region</h3><div class="region-list" id="RB"></div>
 <button class="reset-btn" onclick="resetF()">&#8635; Reset filters</button></div>
 <div class="filter-card">
-<h3>Attended %</h3><div class="slider-group"><div class="slider-label"><span>0%</span><span>100%</span></div>
-<input type="range" id="a0" min="0" max="100" value="0" oninput="applyF()">
-<input type="range" id="a1" min="0" max="100" value="100" oninput="applyF()"></div>
-<h3>SD Conv %</h3><div class="slider-group"><div class="slider-label"><span>0%</span><span>100%</span></div>
-<input type="range" id="s0" min="0" max="100" value="0" oninput="applyF()">
-<input type="range" id="s1" min="0" max="100" value="100" oninput="applyF()"></div>
-<h3>Total Conv %</h3><div class="slider-group"><div class="slider-label"><span>0%</span><span>100%</span></div>
-<input type="range" id="t0" min="0" max="100" value="0" oninput="applyF()">
-<input type="range" id="t1" min="0" max="100" value="100" oninput="applyF()"></div></div>
+<h3>Attended %</h3><div class="slider-group"><div class="slider-label"><span>0%</span><span>100%</span></div><input type="range" id="a0" min="0" max="100" value="0" oninput="applyF()"><input type="range" id="a1" min="0" max="100" value="100" oninput="applyF()"></div>
+<h3>SD Conv %</h3><div class="slider-group"><div class="slider-label"><span>0%</span><span>100%</span></div><input type="range" id="s0" min="0" max="100" value="0" oninput="applyF()"><input type="range" id="s1" min="0" max="100" value="100" oninput="applyF()"></div>
+<h3>Total Conv %</h3><div class="slider-group"><div class="slider-label"><span>0%</span><span>100%</span></div><input type="range" id="t0" min="0" max="100" value="0" oninput="applyF()"><input type="range" id="t1" min="0" max="100" value="100" oninput="applyF()"></div></div>
 <div class="filter-card"><h3 style="margin-bottom:12px">Region Summary</h3><div class="region-summary" id="RS"></div></div>
 </div>
 <div style="display:flex;flex-direction:column;gap:16px"><div class="table-card">
 <div class="right"><input class="search-box" id="SQ" placeholder="Search location..." oninput="applyF()"></div>
-<table><thead><tr><th>#</th><th>Location</th><th>Region</th><th>Sched.</th><th>Attended</th><th>Att.%</th><th>SD Conv%</th><th>Total Conv%</th><th>Status</th></tr></thead><tbody id="TB"></tbody></table>
+<table><thead><tr>
+<th class="sortable" onclick="sortBy(0)"><span>Location</span><span class="si"></span></th>
+<th>#</th><th>Region</th><th>Sched.</th><th>Attended</th>
+<th class="sortable" onclick="sortBy(4)"><span>Att.%</span><span class="si"></span></th>
+<th class="sortable" onclick="sortBy(5)"><span>SD Conv%</span><span class="si"></span></th>
+<th class="sortable" onclick="sortBy(6)"><span>Total Conv%</span><span class="si"></span></th>
+<th class="sortable" onclick="sortBy(7)"><span>Status</span><span class="si"></span></th>
+</tr></thead><tbody id="TB"></tbody></table>
 <div class="empty-msg" id="EM" style="display:none">No locations match your search.</div>
 </div></div></div>
 <script>
@@ -117,20 +123,13 @@ var D=[
 ["San Diego - Point Loma","West",107,84,78.50,50.00,59.52,3],
 ["Huntington Beach","West",83,76,91.57,55.26,57.89,3]
 ];
-var aS=0,aR=0;
+var aS=0,aR=0,sC=-1,sD=1;
 function gv(id){return +document.getElementById(id).value;}
 function gi(id){return document.getElementById(id);}
 function doInit(){
   var rb=gi("RB");
-  rb.innerHTML="<button class=\"region-btn active\" onclick=\"setR(0,this)\">All regions</button>"+
-    RG.map(function(r,i){return "<button class=\"region-btn\" onclick=\"setR("+(i+1)+",this)\">"+r+"</button>";}).join("");
-  var rs=gi("RS");
-  rs.innerHTML=RG.map(function(r){
-    var ls=D.filter(function(d){return d[1]===r;});
-    var aa=(ls.reduce(function(s,d){return s+d[4];},0)/ls.length).toFixed(1);
-    var at=(ls.reduce(function(s,d){return s+d[6];},0)/ls.length).toFixed(1);
-    return "<div class=\"region-card\" style=\"border-left-color:"+RC[r]+"\"><h4>"+r+"</h4><div class=\"loc-count\">"+ls.length+" locations</div><div class=\"stats\">Att. "+aa+"% &middot; Conv "+at+"%</div></div>";
-  }).join("");
+  rb.innerHTML="<button class=\"region-btn active\" onclick=\"setR(0,this)\">All regions</button>"+RG.map(function(r,i){return "<button class=\"region-btn\" onclick=\"setR("+(i+1)+",this)\">"+r+"</button>";}).join("");
+  gi("RS").innerHTML=RG.map(function(r){var ls=D.filter(function(d){return d[1]===r;});var aa=(ls.reduce(function(s,d){return s+d[4];},0)/ls.length).toFixed(1);var at=(ls.reduce(function(s,d){return s+d[6];},0)/ls.length).toFixed(1);return "<div class=\"region-card\" style=\"border-left-color:"+RC[r]+"\"><h4>"+r+"</h4><div class=\"loc-count\">"+ls.length+" locations</div><div class=\"stats\">Att. "+aa+"% &middot; Conv "+at+"%</div></div>";}).join("");
   gi("c0").textContent=D.length;
   gi("c1").textContent=D.filter(function(d){return d[7]===1;}).length;
   gi("c2").textContent=D.filter(function(d){return d[7]===2;}).length;
@@ -139,42 +138,25 @@ function doInit(){
 }
 function setStatus(s,el){aS=s;document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("active");});el.classList.add("active");applyF();}
 function setR(r,el){aR=r;document.querySelectorAll(".region-btn").forEach(function(b){b.classList.remove("active");});el.classList.add("active");applyF();}
-function resetF(){
-  aS=0;aR=0;
-  document.querySelector(".tab").click();
-  document.querySelector(".region-btn").click();
-  ["a0","a1","s0","s1","t0","t1"].forEach(function(id,i){gi(id).value=[0,100,0,100,0,100][i];});
-  gi("SQ").value="";applyF();
+function resetF(){aS=0;aR=0;sC=-1;sD=1;document.querySelector(".tab").click();document.querySelector(".region-btn").click();["a0","a1","s0","s1","t0","t1"].forEach(function(id,i){gi(id).value=[0,100,0,100,0,100][i];});gi("SQ").value="";updH();applyF();}
+function sortBy(col){if(sC===col){sD*=-1;}else{sC=col;sD=1;}updH();applyF();}
+function updH(){
+  var cols=[0,4,5,6,7];
+  document.querySelectorAll("th.sortable").forEach(function(th,i){
+    th.classList.remove("sort-asc","sort-desc");
+    if(cols[i]===sC)th.classList.add(sD===1?"sort-asc":"sort-desc");
+  });
 }
 function applyF(){
   var aMin=gv("a0"),aMax=gv("a1"),sMin=gv("s0"),sMax=gv("s1"),tMin=gv("t0"),tMax=gv("t1");
   var q=gi("SQ").value.toLowerCase();
-  var r=D.filter(function(d){
-    return (aS===0||d[7]===aS)&&(aR===0||d[1]===RG[aR-1])&&
-      d[4]>=aMin&&d[4]<=aMax&&d[5]>=sMin&&d[5]<=sMax&&d[6]>=tMin&&d[6]<=tMax&&
-      d[0].toLowerCase().indexOf(q)>=0;
-  });
+  var r=D.filter(function(d){return (aS===0||d[7]===aS)&&(aR===0||d[1]===RG[aR-1])&&d[4]>=aMin&&d[4]<=aMax&&d[5]>=sMin&&d[5]<=sMax&&d[6]>=tMin&&d[6]<=tMax&&d[0].toLowerCase().indexOf(q)>=0;});
+  if(sC>=0){r=r.slice().sort(function(a,b){var av,bv;if(sC===0){av=a[0];bv=b[0];}else if(sC===7){av=ST[a[7]];bv=ST[b[7]];}else{return sD*(a[sC]-b[sC]);}return sD*(av<bv?-1:av>bv?1:0);});}
   var tb=gi("TB"),em=gi("EM");
   if(!r.length){tb.innerHTML="";em.style.display="block";return;}
   em.style.display="none";
-  tb.innerHTML=r.map(function(d,i){
-    var sc=d[7]===1?"on-track":d[7]===2?"needs-attention":"at-risk";
-    var sl=ST[d[7]];
-    return "<tr><td>"+(i+1)+"</td><td><strong>"+d[0]+"</strong></td>"+
-      "<td><span style=\"font-size:.75rem;padding:2px 8px;border-radius:10px;background:"+RC[d[1]]+"22;color:"+RC[d[1]]+";font-weight:600\">"+d[1]+"</span></td>"+
-      "<td>"+d[2]+"</td><td>"+d[3]+"</td>"+
-      "<td><div class=\"bar-wrap\"><div class=\"bar att\" style=\"width:"+Math.round(d[4])+"px\"></div><span class=\"pct\">"+d[4].toFixed(2)+"%</span></div></td>"+
-      "<td><div class=\"bar-wrap\"><div class=\"bar sd\" style=\"width:"+Math.round(d[5])+"px\"></div><span class=\"pct\">"+d[5].toFixed(2)+"%</span></div></td>"+
-      "<td><div class=\"bar-wrap\"><div class=\"bar tot\" style=\"width:"+Math.round(d[6])+"px\"></div><span class=\"pct\">"+d[6].toFixed(2)+"%</span></div></td>"+
-      "<td><span class=\"badge "+sc+"\">"+sl+"</span></td></tr>";
-  }).join("");
+  tb.innerHTML=r.map(function(d,i){var sc=d[7]===1?"on-track":d[7]===2?"needs-attention":"at-risk";return "<tr><td><strong>"+d[0]+"</strong></td><td>"+(i+1)+"</td><td><span style=\"font-size:.75rem;padding:2px 8px;border-radius:10px;background:"+RC[d[1]]+"22;color:"+RC[d[1]]+";font-weight:600\">"+d[1]+"</span></td><td>"+d[2]+"</td><td>"+d[3]+"</td><td><div class=\"bar-wrap\"><div class=\"bar att\" style=\"width:"+Math.round(d[4])+"px\"></div><span class=\"pct\">"+d[4].toFixed(2)+"%</span></div></td><td><div class=\"bar-wrap\"><div class=\"bar sd\" style=\"width:"+Math.round(d[5])+"px\"></div><span class=\"pct\">"+d[5].toFixed(2)+"%</span></div></td><td><div class=\"bar-wrap\"><div class=\"bar tot\" style=\"width:"+Math.round(d[6])+"px\"></div><span class=\"pct\">"+d[6].toFixed(2)+"%</span></div></td><td><span class=\"badge "+sc+"\">"+ST[d[7]]+"</span></td></tr>";}).join("");
 }
-function exportCSV(){
-  var rows=[["Location","Region","Scheduled","Attended","Att%","SD Conv%","Total Conv%","Status"]];
-  D.forEach(function(d){rows.push([d[0],d[1],d[2],d[3],d[4],d[5],d[6],ST[d[7]]]);});
-  var a=document.createElement("a");
-  a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(rows.map(function(r){return r.join(",");}).join("\n"));
-  a.download="trial_attendance.csv";a.click();
-}
+function exportCSV(){var rows=[["Location","Region","Scheduled","Attended","Att%","SD Conv%","Total Conv%","Status"]];D.forEach(function(d){rows.push([d[0],d[1],d[2],d[3],d[4],d[5],d[6],ST[d[7]]]);});var a=document.createElement("a");a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(rows.map(function(r){return r.join(",");}).join("\n"));a.download="trial_attendance.csv";a.click();}
 window.onload=doInit;
 </script></body></html>
