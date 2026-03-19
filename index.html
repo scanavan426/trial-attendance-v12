@@ -43,9 +43,9 @@ table{width:100%;border-collapse:collapse;font-size:.85rem}
 th{text-align:left;padding:10px 12px;font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;color:#888;border-bottom:2px solid #f0f0f0}
 th.sortable{cursor:pointer;user-select:none;white-space:nowrap}
 th.sortable:hover{color:#3b82f6;background:#f8faff}
-th.sort-asc .si::after{content:" Ã¢ÂÂ²";color:#3b82f6}
-th.sort-desc .si::after{content:" Ã¢ÂÂ¼";color:#3b82f6}
-th:not(.sort-asc):not(.sort-desc) .si::after{content:" Ã¢ÂÂ";opacity:.4}
+th.sort-asc .si::after{content:" ÃÂ¢ÃÂÃÂ²";color:#3b82f6}
+th.sort-desc .si::after{content:" ÃÂ¢ÃÂÃÂ¼";color:#3b82f6}
+th:not(.sort-asc):not(.sort-desc) .si::after{content:" ÃÂ¢ÃÂÃÂ";opacity:.4}
 td{padding:11px 12px;border-bottom:1px solid #f5f5f5}
 tr:hover td{background:#fafafa}
 .badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.72rem;font-weight:600}
@@ -66,8 +66,8 @@ tr:hover td{background:#fafafa}
 <div class="kpi-card main"><div class="kpi-label">Overall att.</div><div class="kpi-value" id="KV0">77.0%</div><div class="kpi-sub" id="KS0">1647 of 2139 attended</div></div>
 <div class="kpi-card main"><div class="kpi-label">Avg SD conv</div><div class="kpi-value" id="KV1">66.7%</div><div class="kpi-sub">Same-day conversion</div></div>
 <div class="kpi-card main"><div class="kpi-label">Avg total conv</div><div class="kpi-value" id="KV2">72.3%</div><div class="kpi-sub">Total conversion</div></div>
-<div class="kpi-card on-track"><div class="kpi-label">On track</div><div class="kpi-value">11</div><div class="kpi-sub">Total conv &ge; 75%</div></div>
-<div class="kpi-card at-risk"><div class="kpi-label">At risk</div><div class="kpi-value">8</div><div class="kpi-sub">Total conv &lt; 70%</div></div> <div class="kpi-card needs-attention"><div class="kpi-label">Needs attention</div><div class="kpi-value" id="KNA">0</div><div class="kpi-sub">Total conv 70Ã¢ÂÂ74%</div></div>
+<div class="kpi-card on-track"><div class="kpi-label">On track</div><div class="kpi-value" id="KV3">9</div><div class="kpi-sub">Total conv &ge; 75%</div></div>
+<div class="kpi-card at-risk"><div class="kpi-label">At risk</div><div class="kpi-value" id="KV4">9</div><div class="kpi-sub">Total conv &lt; 70%</div></div> <div class="kpi-card needs-attention"><div class="kpi-label">Needs attention</div><div class="kpi-value" id="KNA">0</div><div class="kpi-sub">Total conv 70ÃÂ¢ÃÂÃÂ74%</div></div>
 </div>
 <div class="main-content"><div class="sidebar">
 <div class="filter-card"><h3>Filter by Status</h3><div class="tabs">
@@ -131,6 +131,9 @@ function doInit(){
   if(gi("KS0"))gi("KS0").textContent=ta+" of "+ts+" attended";
   if(gi("KV1"))gi("KV1").textContent=(D.reduce(function(s,d){return s+d[5];},0)/D.length).toFixed(1)+"%";
   if(gi("KV2"))gi("KV2").textContent=(D.reduce(function(s,d){return s+d[6];},0)/D.length).toFixed(1)+"%";
+  if(gi("KV3"))gi("KV3").textContent=D.filter(function(d){return d[7]===1;}).length;
+  if(gi("KV4"))gi("KV4").textContent=D.filter(function(d){return d[7]===3;}).length;
+  if(gi("KV5"))gi("KV5").textContent=D.filter(function(d){return d[7]===2;}).length;
   var rb=gi("RB");
   rb.innerHTML='<button class="region-btn active" onclick="setR(0,this)">All</button>'+RG.map(function(r,i){return '<button class="region-btn" onclick="setR('+(i+1)+',this)">'+r+'</button>';}).join('');
   gi("RS").innerHTML=RG.map(function(r){var ls=D.filter(function(d){return d[1]===r;});var aa=(ls.reduce(function(s,d){return s+d[4];},0)/ls.length).toFixed(1);var at=(ls.reduce(function(s,d){return s+d[6];},0)/ls.length).toFixed(1);return '<div class="region-card" style="border-left-color:'+RC[r]+'"><h4>'+r+'</h4><div class="loc-count">'+ls.length+' locations</div><div class="stats">Att. '+aa+'% &middot; Conv '+at+'%</div></div>';}).join('');
