@@ -100,36 +100,29 @@ var ST=["All","On track","Needs attention","At risk"];
 var RG=["East","South","West","Southwest","Midwest"];
 var RC={"East":"#3b82f6","South":"#10b981","West":"#f59e0b","Southwest":"#8b5cf6","Midwest":"#ef4444"};
 var D=[
-["Allen","South",101,67,66.34,75.76,78.79,1],
-["Atlanta - North Druid Hills","South",106,73,68.87,78.87,83.10,1],
-["Buffalo Grove","Midwest",43,38,88.37,89.19,94.59,1],
-["Chantilly","East",43,34,79.07,64.71,76.47,1],
-["Chicago - North Center","Midwest",129,97,75.19,58.33,67.71,3],
-["Dulles","East",55,48,87.27,58.14,60.47,3],
-["Fairfax","East",80,70,87.50,67.16,74.63,2],
-["Falls Church","East",80,69,86.25,68.66,76.12,1],
-["Frisco","South",102,71,69.61,85.07,86.57,1],
-["Germantown","East",87,63,72.41,73.77,75.41,1],
-["Gilbert","Southwest",101,74,73.27,53.52,61.97,3],
-["Hoffman Estates","Midwest",47,39,82.98,89.47,92.11,1],
-["Huntington Beach","West",85,76,89.41,55.26,57.89,3],
-["Johns Creek","South",78,49,62.82,63.04,80.43,1],
-["Lakewood","West",314,210,66.88,61.69,65.17,3],
-["Niles","Midwest",31,27,87.10,73.08,80.77,1],
-["Plano","South",59,42,71.19,78.05,80.49,1],
-["San Diego - Point Loma","West",117,87,74.36,50.00,59.52,3],
-["Springfield","East",100,85,85.00,65.85,71.95,2],
-["Torrance","West",260,197,75.77,54.74,62.63,3],
-["Tustin","West",89,89,100.00,56.98,62.79,3],
-["Wilmette","Midwest",34,33,97.06,60.00,73.33,2]
-]
-var aS=0,aR=0,sC=-1,sD=1;
-function gv(id){return +document.getElementById(id).value;}
-function gi(id){return document.getElementById(id);}
-function doInit(){
-  var rb=gi("RB");
-  rb.innerHTML="<button class=\"region-btn active\" onclick=\"setR(0,this)\">All regions</button>"+RG.map(function(r,i){return "<button class=\"region-btn\" onclick=\"setR("+(i+1)+",this)\">"+r+"</button>";}).join("");
-  gi("RS").innerHTML=RG.map(function(r){var ls=D.filter(function(d){return d[1]===r;});var aa=(ls.reduce(function(s,d){return s+d[4];},0)/ls.length).toFixed(1);var at=(ls.reduce(function(s,d){return s+d[6];},0)/ls.length).toFixed(1);return "<div class=\"region-card\" style=\"border-left-color:"+RC[r]+"\"><h4>"+r+"</h4><div class=\"loc-count\">"+ls.length+" locations</div><div class=\"stats\">Att. "+aa+"% &middot; Conv "+at+"%</div></div>";}).join("");
+["Allen","South",101,67,66.34,76,76,1],
+["Atlanta - North Druid Hills","South",106,73,68.87,79,83,1],
+["Buffalo Grove","Midwest",43,38,88.37,89,95,1],
+["Chantilly","East",43,34,79.07,65,76,1],
+["Chicago - North Center","Midwest",129,97,75.19,57,64,3],
+["Dulles","East",55,48,87.27,58,60,3],
+["Fairfax","East",80,70,87.50,67,72,2],
+["Falls Church","East",80,69,86.25,69,76,1],
+["Frisco","South",102,71,69.61,85,85,1],
+["Germantown","East",87,63,72.41,70,72,2],
+["Gilbert","Southwest",101,74,73.27,54,62,3],
+["Hoffman Estates","Midwest",47,39,82.98,89,92,1],
+["Huntington Beach","West",85,76,89.41,54,57,3],
+["Johns Creek","South",78,49,62.82,56,69,3],
+["Lakewood","West",314,210,66.88,62,65,3],
+["Niles","Midwest",31,27,87.10,73,81,1],
+["Plano","South",59,42,71.19,78,78,1],
+["San Diego - Point Loma","West",117,87,74.36,50,60,3],
+["Springfield","East",100,85,85.00,66,72,2],
+["Torrance","West",260,197,75.77,53,60,3],
+["Tustin","West",89,89,100.00,57,63,3],
+["Wilmette","Midwest",34,33,97.06,60,73,2]
+]},0)/ls.length).toFixed(1);var at=(ls.reduce(function(s,d){return s+d[6];},0)/ls.length).toFixed(1);return "<div class=\"region-card\" style=\"border-left-color:"+RC[r]+"\"><h4>"+r+"</h4><div class=\"loc-count\">"+ls.length+" locations</div><div class=\"stats\">Att. "+aa+"% &middot; Conv "+at+"%</div></div>";}).join("");
   gi("c0").textContent=D.length;
   gi("c1").textContent=D.filter(function(d){return d[7]===1;}).length;
   gi("c2").textContent=D.filter(function(d){return d[7]===2;}).length;
