@@ -1,109 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Trial Dashboard</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f0f2f5;color:#1a1a2e}
-header{background:linear-gradient(135deg,#1a1a2e,#16213e 50%,#0f3460);color:#fff;padding:24px 32px}
-header h1{font-size:1.6rem;font-weight:700}
-header p{opacity:.7;font-size:.9rem;margin-top:4px}
-.export-btn{margin-top:12px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:.85rem}
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;padding:24px 32px 0}
-.kpi-card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.kpi-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;color:#666}
-.kpi-value{font-size:2rem;font-weight:700;margin:6px 0 2px}
-.kpi-sub{font-size:.8rem;color:#888}
-.kpi-card.on-track .kpi-value{color:#10b981}
-.kpi-card.at-risk .kpi-value{color:#ef4444} .kpi-card.needs-attention .kpi-value{color:#f59e0b}
-.kpi-card.main .kpi-value{color:#3b82f6}
-.main-content{display:grid;grid-template-columns:280px 1fr;gap:20px;padding:20px 32px 32px}
-.sidebar{display:flex;flex-direction:column;gap:16px}
-.filter-card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.filter-card h3{font-size:.85rem;font-weight:600;color:#333;margin-bottom:14px}
-.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
-.tab{padding:5px 10px;border-radius:20px;font-size:.75rem;border:1px solid #e0e0e0;background:#fff;cursor:pointer}
-.tab.active{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
-.region-list{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
-.region-btn{padding:6px 10px;border-radius:8px;font-size:.78rem;border:1px solid #e0e0e0;background:#fff;cursor:pointer;text-align:left}
-.region-btn.active{background:#eff6ff;border-color:#3b82f6;color:#2563eb}
-.reset-btn{width:100%;padding:8px;border-radius:8px;border:1px solid #e0e0e0;background:#fff;cursor:pointer;font-size:.8rem;color:#555}
-.slider-group{margin-bottom:12px}
-.slider-label{font-size:.75rem;color:#555;margin-bottom:4px;display:flex;justify-content:space-between}
-input[type=range]{width:100%;accent-color:#3b82f6}
-.region-summary{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.region-card{background:#fff;border-radius:10px;padding:14px;box-shadow:0 2px 6px rgba(0,0,0,.05);border-left:4px solid #3b82f6}
-.region-card h4{font-size:.8rem;font-weight:600;color:#333}
-.loc-count{font-size:.7rem;color:#888;margin-bottom:6px}
-.stats{font-size:.75rem;color:#555}
-.table-card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06);overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:.85rem}
-th{text-align:left;padding:10px 12px;font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;color:#888;border-bottom:2px solid #f0f0f0}
-th.sortable{cursor:pointer;user-select:none;white-space:nowrap}
-th.sortable:hover{color:#3b82f6;background:#f8faff}
-th.sort-asc .si::after{content:" ▲";color:#3b82f6}
-th.sort-desc .si::after{content:" ▼";color:#3b82f6}
-th:not(.sort-asc):not(.sort-desc) .si::after{content:" ⇅";opacity:.4}
-td{padding:11px 12px;border-bottom:1px solid #f5f5f5}
-tr:hover td{background:#fafafa}
-.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.72rem;font-weight:600}
-.badge.on-track{background:#d1fae5;color:#065f46}
-.badge.needs-attention{background:#fef3c7;color:#92400e}
-.badge.at-risk{background:#fee2e2;color:#991b1b}
-.bar-wrap{display:flex;align-items:center;gap:8px}
-.bar{height:6px;border-radius:3px;min-width:4px}
-.bar.att{background:#3b82f6}.bar.sd{background:#8b5cf6}.bar.tot{background:#10b981}
-.pct{font-size:.8rem;min-width:44px}
-.right{display:flex;justify-content:flex-end;margin-bottom:12px}
-.search-box{padding:7px 12px;border:1px solid #e0e0e0;border-radius:8px;font-size:.85rem;width:220px}
-.empty-msg{text-align:center;color:#aaa;padding:24px;font-size:.9rem}
-@media(max-width:900px){.main-content{grid-template-columns:1fr}.kpi-grid{grid-template-columns:repeat(2,1fr);padding:16px}header,.main-content{padding-left:16px;padding-right:16px}.region-summary{grid-template-columns:1fr}}
-</style></head><body>
-<header><h1>Trial Dashboard</h1><p>Trial session attendance, same-day &amp; total conversion by location</p><button class="export-btn" onclick="exportCSV()">&#8595; Export CSV</button></header>
-<div class="kpi-grid">
-<div class="kpi-card main"><div class="kpi-label">Overall att.</div><div class="kpi-value">77.4%</div><div class="kpi-sub">1580 of 2042 attended</div></div>
-<div class="kpi-card main"><div class="kpi-label">Avg SD conv</div><div class="kpi-value">67.3%</div><div class="kpi-sub">Same-day conversion</div></div>
-<div class="kpi-card main"><div class="kpi-label">Avg total conv</div><div class="kpi-value">73.8%</div><div class="kpi-sub">Total conversion</div></div>
-<div class="kpi-card on-track"><div class="kpi-label">On track</div><div class="kpi-value">11</div><div class="kpi-sub">Total conv &ge; 75%</div></div>
-<div class="kpi-card at-risk"><div class="kpi-label">At risk</div><div class="kpi-value">8</div><div class="kpi-sub">Total conv &lt; 70%</div></div> <div class="kpi-card needs-attention"><div class="kpi-label">Needs attention</div><div class="kpi-value" id="KNA">0</div><div class="kpi-sub">Total conv 70–74%</div></div>
-</div>
-<div class="main-content"><div class="sidebar">
-<div class="filter-card"><h3>Filter by Status</h3><div class="tabs">
-<button class="tab active" onclick="setStatus(0,this)">All <span id="c0"></span></button>
-<button class="tab" onclick="setStatus(1,this)">On track <span id="c1"></span></button>
-<button class="tab" onclick="setStatus(2,this)">Needs attention <span id="c2"></span></button>
-<button class="tab" onclick="setStatus(3,this)">At risk <span id="c3"></span></button>
-</div><h3>Filter by Region</h3><div class="region-list" id="RB"></div>
-<button class="reset-btn" onclick="resetF()">&#8635; Reset filters</button></div>
-<div class="filter-card">
-<h3>Attended %</h3><div class="slider-group"><div class="slider-label"><span>0%</span><span>100%</span></div><input type="range" id="a0" min="0" max="100" value="0" oninput="applyF()"><input type="range" id="a1" min="0" max="100" value="100" oninput="applyF()"></div>
-<h3>SD Conv %</h3><div class="slider-group"><div class="slider-label"><span>0%</span><span>100%</span></div><input type="range" id="s0" min="0" max="100" value="0" oninput="applyF()"><input type="range" id="s1" min="0" max="100" value="100" oninput="applyF()"></div>
-<h3>Total Conv %</h3><div class="slider-group"><div class="slider-label"><span>0%</span><span>100%</span></div><input type="range" id="t0" min="0" max="100" value="0" oninput="applyF()"><input type="range" id="t1" min="0" max="100" value="100" oninput="applyF()"></div></div>
-<div class="filter-card"><h3 style="margin-bottom:12px">Region Summary</h3><div class="region-summary" id="RS"></div></div>
-</div>
-<div style="display:flex;flex-direction:column;gap:16px"><div class="table-card">
-<div class="right"><input class="search-box" id="SQ" placeholder="Search location..." oninput="applyF()"></div>
-<table><thead><tr>
-<th class="sortable" onclick="sortBy(0)"><span>Location</span><span class="si"></span></th>
-<th>#</th><th>Region</th><th>Sched.</th><th>Attended</th>
-<th class="sortable" onclick="sortBy(4)"><span>Att.%</span><span class="si"></span></th>
-<th class="sortable" onclick="sortBy(5)"><span>SD Conv%</span><span class="si"></span></th>
-<th class="sortable" onclick="sortBy(6)"><span>Total Conv%</span><span class="si"></span></th>
-<th class="sortable" onclick="sortBy(7)"><span>Status</span><span class="si"></span></th>
-</tr></thead><tbody id="TB"></tbody></table>
-<div class="empty-msg" id="EM" style="display:none">No locations match your search.</div>
-</div></div></div>
-<script>
-var ST=["All","On track","Needs attention","At risk"];
-var RG=["East","South","West","Southwest","Midwest"];
-var RC={"East":"#3b82f6","South":"#10b981","West":"#f59e0b","Southwest":"#8b5cf6","Midwest":"#ef4444"};
-var D=[
-["Allen","South",101,67,66.34,76,76,1],
-["Atlanta - North Druid Hills","South",106,73,68.87,79,83,1],
-["Buffalo Grove","Midwest",43,38,88.37,89,95,1],
-["Chantilly","East",43,34,79.07,65,76,1],
 ["Chicago - North Center","Midwest",129,97,75.19,57,64,3],
 ["Dulles","East",55,48,87.27,58,60,3],
 ["Fairfax","East",80,70,87.50,67,72,2],
@@ -112,14 +6,14 @@ var D=[
 ["Germantown","East",87,63,72.41,70,72,2],
 ["Gilbert","Southwest",101,74,73.27,54,62,3],
 ["Hoffman Estates","Midwest",47,39,82.98,89,92,1],
-["Huntington Beach","West",85,76,89.41,54,57,3],
+["Huntington Beach","West",85,77,90.59,54,57,3],
 ["Johns Creek","South",78,49,62.82,56,69,3],
-["Lakewood","West",314,210,66.88,62,65,3],
+["Lakewood","West",314,217,69.11,62,65,3],
 ["Niles","Midwest",31,27,87.10,73,81,1],
 ["Plano","South",59,42,71.19,78,78,1],
-["San Diego - Point Loma","West",117,87,74.36,50,60,3],
+["San Diego - Point Loma","West",117,88,75.21,50,60,3],
 ["Springfield","East",100,85,85.00,66,72,2],
-["Torrance","West",260,197,75.77,53,60,3],
+["Torrance","West",258,197,76.36,53,60,3],
 ["Tustin","West",89,89,100.00,57,63,3],
 ["Wilmette","Midwest",34,33,97.06,60,73,2]
 ]; var aS=0,aR=0,sC=-1,sD=1;
@@ -145,7 +39,7 @@ function updH(){
   document.querySelectorAll("th.sortable").forEach(function(th,i){
     th.classList.remove("sort-asc","sort-desc");
     if(cols[i]===sC)th.classList.add(sD===1?"sort-asc":"sort-desc");
-  });
+  })
 }
 function applyF(){
   var aMin=gv("a0"),aMax=gv("a1"),sMin=gv("s0"),sMax=gv("s1"),tMin=gv("t0"),tMax=gv("t1");
