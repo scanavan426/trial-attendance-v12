@@ -122,11 +122,18 @@ var D=[
 ["Torrance","West",260,197,75.77,53,60,3],
 ["Tustin","West",89,89,100.00,57,63,3],
 ["Wilmette","Midwest",34,33,97.06,60,73,2]
-]},0)/ls.length).toFixed(1);var at=(ls.reduce(function(s,d){return s+d[6];},0)/ls.length).toFixed(1);return "<div class=\"region-card\" style=\"border-left-color:"+RC[r]+"\"><h4>"+r+"</h4><div class=\"loc-count\">"+ls.length+" locations</div><div class=\"stats\">Att. "+aa+"% &middot; Conv "+at+"%</div></div>";}).join("");
+]; var aS=0,aR=0,sC=-1,sD=1;
+function gi(id){return document.getElementById(id);}
+function gv(id){return +gi(id).value;}
+function doInit(){
+  var rb=gi("RB");
+  rb.innerHTML='<button class="region-btn active" onclick="setR(0,this)">All</button>'+RG.map(function(r,i){return '<button class="region-btn" onclick="setR('+(i+1)+',this)">'+r+'</button>';}).join('');
+  gi("RS").innerHTML=RG.map(function(r){var ls=D.filter(function(d){return d[1]===r;});var aa=(ls.reduce(function(s,d){return s+d[4];},0)/ls.length).toFixed(1);var at=(ls.reduce(function(s,d){return s+d[6];},0)/ls.length).toFixed(1);return '<div class="region-card" style="border-left-color:'+RC[r]+'"><h4>'+r+'</h4><div class="loc-count">'+ls.length+' locations</div><div class="stats">Att. '+aa+'% &middot; Conv '+at+'%</div></div>';}).join('');
   gi("c0").textContent=D.length;
   gi("c1").textContent=D.filter(function(d){return d[7]===1;}).length;
   gi("c2").textContent=D.filter(function(d){return d[7]===2;}).length;
-  gi("c3").textContent=D.filter(function(d){return d[7]===3;}).length; var kna=document.getElementById("KNA"); if(kna)kna.textContent=D.filter(function(d){return d[7]===2;}).length;
+  gi("c3").textContent=D.filter(function(d){return d[7]===3;}).length;
+  var kna=document.getElementById("KNA");if(kna)kna.textContent=D.filter(function(d){return d[7]===2;}).length;
   applyF();
 }
 function setStatus(s,el){aS=s;document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("active");});el.classList.add("active");applyF();}
