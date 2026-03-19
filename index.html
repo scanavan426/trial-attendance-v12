@@ -17,7 +17,7 @@ header p{opacity:.7;font-size:.9rem;margin-top:4px}
 .kpi-value{font-size:2rem;font-weight:700;margin:6px 0 2px}
 .kpi-sub{font-size:.8rem;color:#888}
 .kpi-card.on-track .kpi-value{color:#10b981}
-.kpi-card.at-risk .kpi-value{color:#ef4444}
+.kpi-card.at-risk .kpi-value{color:#ef4444} .kpi-card.needs-attention .kpi-value{color:#f59e0b}
 .kpi-card.main .kpi-value{color:#3b82f6}
 .main-content{display:grid;grid-template-columns:280px 1fr;gap:20px;padding:20px 32px 32px}
 .sidebar{display:flex;flex-direction:column;gap:16px}
@@ -67,7 +67,7 @@ tr:hover td{background:#fafafa}
 <div class="kpi-card main"><div class="kpi-label">Avg SD conv</div><div class="kpi-value">67.3%</div><div class="kpi-sub">Same-day conversion</div></div>
 <div class="kpi-card main"><div class="kpi-label">Avg total conv</div><div class="kpi-value">73.8%</div><div class="kpi-sub">Total conversion</div></div>
 <div class="kpi-card on-track"><div class="kpi-label">On track</div><div class="kpi-value">11</div><div class="kpi-sub">Total conv &ge; 75%</div></div>
-<div class="kpi-card at-risk"><div class="kpi-label">At risk</div><div class="kpi-value">8</div><div class="kpi-sub">Total conv &lt; 70%</div></div>
+<div class="kpi-card at-risk"><div class="kpi-label">At risk</div><div class="kpi-value">8</div><div class="kpi-sub">Total conv &lt; 70%</div></div> <div class="kpi-card needs-attention"><div class="kpi-label">Needs attention</div><div class="kpi-value" id="KNA">0</div><div class="kpi-sub">Total conv 70–74%</div></div>
 </div>
 <div class="main-content"><div class="sidebar">
 <div class="filter-card"><h3>Filter by Status</h3><div class="tabs">
@@ -133,7 +133,7 @@ function doInit(){
   gi("c0").textContent=D.length;
   gi("c1").textContent=D.filter(function(d){return d[7]===1;}).length;
   gi("c2").textContent=D.filter(function(d){return d[7]===2;}).length;
-  gi("c3").textContent=D.filter(function(d){return d[7]===3;}).length;
+  gi("c3").textContent=D.filter(function(d){return d[7]===3;}).length; var kna=document.getElementById("KNA"); if(kna)kna.textContent=D.filter(function(d){return d[7]===2;}).length;
   applyF();
 }
 function setStatus(s,el){aS=s;document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("active");});el.classList.add("active");applyF();}
