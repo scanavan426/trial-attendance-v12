@@ -67,7 +67,7 @@ tr:hover td{background:#fafafa}
 <div class="kpi-card main"><div class="kpi-label">Avg SD conv</div><div class="kpi-value" id="KV1">66.7%</div><div class="kpi-sub">Same-day conversion</div></div>
 <div class="kpi-card main"><div class="kpi-label">Avg total conv</div><div class="kpi-value" id="KV2">72.3%</div><div class="kpi-sub">Total conversion</div></div>
 <div class="kpi-card on-track"><div class="kpi-label">On track</div><div class="kpi-value" id="KV3">9</div><div class="kpi-sub">Total conv &ge; 75%</div></div>
-<div class="kpi-card at-risk"><div class="kpi-label">At risk</div><div class="kpi-value" id="KV4">9</div><div class="kpi-sub">Total conv &lt; 70%</div></div> <div class="kpi-card needs-attention"><div class="kpi-label">Needs attention</div><div class="kpi-value" id="KNA">0</div><div class="kpi-sub">Total conv 70–74%</div></div>
+<div class="kpi-card at-risk"><div class="kpi-label">At risk</div><div class="kpi-value" id="KV4">9</div><div class="kpi-sub">Total conv &lt; 70%</div></div> <div class="kpi-card needs-attention"><div class="kpi-label">Needs attention</div><div class="kpi-value" id="KNA">0</div><div class="kpi-sub">Total conv 70â74%</div></div>
 </div>
 <div class="main-content"><div class="sidebar">
 <div class="filter-card"><h3>Filter by Status</h3><div class="tabs">
@@ -113,7 +113,7 @@ var D=[
  ["Gilbert","Southwest",106,76,71.70,54,62,3],
  ["Hoffman Estates","Midwest",49,41,83.67,90,73,2],
  ["Huntington Beach","West",88,80,90.91,55,57,3],
- ["Johns Creek","South",78,49,62.82,57,70,3],
+ ["Johns Creek","South",78,49,62.82,57,70,2],
  ["Lakewood","West",326,225,69.02,59,63,3],
  ["Niles","Midwest",33,29,87.88,72,79,1],
  ["Plano","South",65,46,70.77,78,78,1],
@@ -131,16 +131,16 @@ function doInit(){
   if(gi("KS0"))gi("KS0").textContent=ta+" of "+ts+" attended";
   if(gi("KV1"))gi("KV1").textContent=(D.reduce(function(s,d){return s+d[5];},0)/D.length).toFixed(1)+"%";
   if(gi("KV2"))gi("KV2").textContent=(D.reduce(function(s,d){return s+d[6];},0)/D.length).toFixed(1)+"%";
-  if(gi("KV3"))gi("KV3").textContent=D.filter(function(d){return d[7]===1;}).length;
-  if(gi("KV4"))gi("KV4").textContent=D.filter(function(d){return d[7]===3;}).length;
-  if(gi("KV5"))gi("KV5").textContent=D.filter(function(d){return d[7]===2;}).length;
+  if(gi("KV3"))gi("KV3").textContent=D.filter(function(d){return d[6]>=75;}).length;
+  if(gi("KV4"))gi("KV4").textContent=D.filter(function(d){return d[6]<70;}).length;
+  if(gi("KV5"))gi("KV5").textContent=D.filter(function(d){return d[6]>=70&&d[6]<75;}).length;
   var rb=gi("RB");
   rb.innerHTML='<button class="region-btn active" onclick="setR(0,this)">All</button>'+RG.map(function(r,i){return '<button class="region-btn" onclick="setR('+(i+1)+',this)">'+r+'</button>';}).join('');
   gi("RS").innerHTML=RG.map(function(r){var ls=D.filter(function(d){return d[1]===r;});var aa=(ls.reduce(function(s,d){return s+d[4];},0)/ls.length).toFixed(1);var at=(ls.reduce(function(s,d){return s+d[6];},0)/ls.length).toFixed(1);return '<div class="region-card" style="border-left-color:'+RC[r]+'"><h4>'+r+'</h4><div class="loc-count">'+ls.length+' locations</div><div class="stats">Att. '+aa+'% &middot; Conv '+at+'%</div></div>';}).join('');
   gi("c0").textContent=D.length;
-  gi("c1").textContent=D.filter(function(d){return d[7]===1;}).length;
-  gi("c2").textContent=D.filter(function(d){return d[7]===2;}).length;
-  gi("c3").textContent=D.filter(function(d){return d[7]===3;}).length;
+  gi("c1").textContent=D.filter(function(d){return d[6]>=75;}).length;
+  gi("c2").textContent=D.filter(function(d){return d[6]>=70&&d[6]<75;}).length;
+  gi("c3").textContent=D.filter(function(d){return d[6]<70;}).length;
   var kna=document.getElementById("KNA");if(kna)kna.textContent=D.filter(function(d){return d[7]===2;}).length;
   applyF();
 }
@@ -158,12 +158,12 @@ function updH(){
 function applyF(){
   var aMin=gv("a0"),aMax=gv("a1"),sMin=gv("s0"),sMax=gv("s1"),tMin=gv("t0"),tMax=gv("t1");
   var q=gi("SQ").value.toLowerCase();
-  var r=D.filter(function(d){return (aS===0||d[7]===aS)&&(aR===0||d[1]===RG[aR-1])&&d[4]>=aMin&&d[4]<=aMax&&d[5]>=sMin&&d[5]<=sMax&&d[6]>=tMin&&d[6]<=tMax&&d[0].toLowerCase().indexOf(q)>=0;});
+  var r=D.filter(function(d){return (aS===0||(aS===1&&d[6]>=75)||(aS===2&&d[6]>=70&&d[6]<75)||(aS===3&&d[6]<70))&&(aR===0||d[1]===RG[aR-1])&&d[4]>=aMin&&d[4]<=aMax&&d[5]>=sMin&&d[5]<=sMax&&d[6]>=tMin&&d[6]<=tMax&&d[0].toLowerCase().indexOf(q)>=0;});
   if(sC>=0){r=r.slice().sort(function(a,b){var av,bv;if(sC===0){av=a[0];bv=b[0];}else if(sC===7){av=ST[a[7]];bv=ST[b[7]];}else{return sD*(a[sC]-b[sC]);}return sD*(av<bv?-1:av>bv?1:0);});}
   var tb=gi("TB"),em=gi("EM");
   if(!r.length){tb.innerHTML="";em.style.display="block";return;}
   em.style.display="none";
-  tb.innerHTML=r.map(function(d,i){var sc=d[7]===1?"on-track":d[7]===2?"needs-attention":"at-risk";return "<tr><td><strong>"+d[0]+"</strong></td><td>"+(i+1)+"</td><td><span style=\"font-size:.75rem;padding:2px 8px;border-radius:10px;background:"+RC[d[1]]+"22;color:"+RC[d[1]]+";font-weight:600\">"+d[1]+"</span></td><td>"+d[2]+"</td><td>"+d[3]+"</td><td><div class=\"bar-wrap\"><div class=\"bar att\" style=\"width:"+Math.round(d[4])+"px;background:"+(d[4]>=80?"#10b981":d[4]>=70?"#f59e0b":"#ef4444")+"\"></div><span class=\"pct\" style=\"color:"+(d[4]>=80?"#065f46":d[4]>=70?"#92400e":"#991b1b")+";font-weight:600\">"+d[4].toFixed(2)+"%</span></div></td><td><div class=\"bar-wrap\"><div class=\"bar sd\" style=\"width:"+Math.round(d[5])+"px;background:"+(d[5]>=75?"#10b981":d[5]>=70?"#f59e0b":"#ef4444")+"\"></div><span class=\"pct\" style=\"color:"+(d[5]>=75?"#065f46":d[5]>=70?"#92400e":"#991b1b")+";font-weight:600\">"+d[5].toFixed(2)+"%</span></div></td><td><div class=\"bar-wrap\"><div class=\"bar tot\" style=\"width:"+Math.round(d[6])+"px;background:"+(d[6]>=75?"#10b981":d[6]>=70?"#f59e0b":"#ef4444")+"\"></div><span class=\"pct\" style=\"color:"+(d[6]>=75?"#065f46":d[6]>=70?"#92400e":"#991b1b")+";font-weight:600\">"+d[6].toFixed(2)+"%</span></div></td><td><span class=\"badge "+sc+"\">"+ST[d[7]]+"</span></td></tr>";}).join("");
+  tb.innerHTML=r.map(function(d,i){var sc=d[6]>=75?"on-track":d[6]>=70?"needs-attention":"at-risk";return "<tr><td><strong>"+d[0]+"</strong></td><td>"+(i+1)+"</td><td><span style=\"font-size:.75rem;padding:2px 8px;border-radius:10px;background:"+RC[d[1]]+"22;color:"+RC[d[1]]+";font-weight:600\">"+d[1]+"</span></td><td>"+d[2]+"</td><td>"+d[3]+"</td><td><div class=\"bar-wrap\"><div class=\"bar att\" style=\"width:"+Math.round(d[4])+"px;background:"+(d[4]>=80?"#10b981":d[4]>=70?"#f59e0b":"#ef4444")+"\"></div><span class=\"pct\" style=\"color:"+(d[4]>=80?"#065f46":d[4]>=70?"#92400e":"#991b1b")+";font-weight:600\">"+d[4].toFixed(2)+"%</span></div></td><td><div class=\"bar-wrap\"><div class=\"bar sd\" style=\"width:"+Math.round(d[5])+"px;background:"+(d[5]>=75?"#10b981":d[5]>=70?"#f59e0b":"#ef4444")+"\"></div><span class=\"pct\" style=\"color:"+(d[5]>=75?"#065f46":d[5]>=70?"#92400e":"#991b1b")+";font-weight:600\">"+d[5].toFixed(2)+"%</span></div></td><td><div class=\"bar-wrap\"><div class=\"bar tot\" style=\"width:"+Math.round(d[6])+"px;background:"+(d[6]>=75?"#10b981":d[6]>=70?"#f59e0b":"#ef4444")+"\"></div><span class=\"pct\" style=\"color:"+(d[6]>=75?"#065f46":d[6]>=70?"#92400e":"#991b1b")+";font-weight:600\">"+d[6].toFixed(2)+"%</span></div></td><td><span class=\"badge "+sc+"\">"+ST[d[7]]+"</span></td></tr>";}).join("");
 }
 function exportCSV(){var rows=[["Location","Region","Scheduled","Attended","Att%","SD Conv%","Total Conv%","Status"]];D.forEach(function(d){rows.push([d[0],d[1],d[2],d[3],d[4],d[5],d[6],ST[d[7]]]);});var a=document.createElement("a");a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(rows.map(function(r){return r.join(",");}).join("\n"));a.download="trial_attendance.csv";a.click();}
 window.onload=doInit;
